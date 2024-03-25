@@ -1,19 +1,28 @@
+import { useEffect } from "react";
+import useConversion from "../../zustand/useConversation";
 import MessageInput from "./MessageInput";
 import Messages from "./Messages";
 import { TiMessages } from "react-icons/ti";
 
 const MessageContainer = () => {
-  const noChatSelected = true;
+  const { selectedConversion, setSelectedConversion } = useConversion();
+
+  useEffect(() => {
+    return ()=> setSelectedConversion(null);
+  }, [setSelectedConversion]);
+
   return (
     <div className="md:min-w-[450px] flex flex-col">
-      {noChatSelected ? (
+      {!selectedConversion ? (
         <NoChatSelected />
       ) : (
         <>
           {/* Header */}
           <div className="bg-slate-500 px-4 py-2 mb-2">
             <span className="label-text"> To: </span>
-            <span className="text-gray-900 font-bold">John Doe</span>
+            <span className="text-gray-900 font-bold">
+              {selectedConversion.fullName}
+            </span>
           </div>
           <Messages />
           <MessageInput />
